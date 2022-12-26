@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:lms_app/main.dart';
+import 'package:lms_app/models/lesson.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -26,5 +27,9 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
+
+  test("convert to datetime", () {
+    expect(Lesson.getTimeStart("202202101220"), DateTime(2022, 02, 10, 12, 20));
   });
 }
