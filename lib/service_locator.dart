@@ -4,8 +4,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lms_app/api/app_dio.dart';
 import 'package:lms_app/repository/auth_repository.dart';
 import 'package:lms_app/repository/lesson_repository.dart';
-import 'package:lms_app/screens/auth/viewmodel/auth_viewmodel.dart';
-import 'package:lms_app/screens/lesson/viewmodel/lesson_viewmodel.dart';
+import 'package:lms_app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:lms_app/features/lesson/viewmodel/lesson_viewmodel.dart';
 
 GetIt getIt = GetIt.instance;
 

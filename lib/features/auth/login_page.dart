@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lms_app/base/view/base_view.dart';
 import 'package:lms_app/models/auth_status.dart';
-import 'package:lms_app/screens/auth/viewmodel/auth_viewmodel.dart';
-import 'package:lms_app/screens/dashboard/dashboard_page.dart';
 import 'package:lms_app/service_locator.dart';
 import 'package:provider/provider.dart';
+import '../dashboard/dashboard_page.dart';
+import 'viewmodel/auth_viewmodel.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});

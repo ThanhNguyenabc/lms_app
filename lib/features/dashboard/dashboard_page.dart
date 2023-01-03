@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lms_app/screens/lesson/lesson_page.dart';
+
+import '../lesson/lesson_page.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({super.key});

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:lms_app/app_routes.dart';
-import 'package:lms_app/screens/auth/auth_page.dart';
-import 'package:lms_app/screens/auth/viewmodel/auth_viewmodel.dart';
+import 'package:lms_app/features/auth/auth_page.dart';
+import 'package:lms_app/features/auth/viewmodel/auth_viewmodel.dart';
 import 'package:lms_app/service_locator.dart';
 import 'package:provider/provider.dart';
 

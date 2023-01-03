@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lms_app/models/auth_status.dart';
-import 'package:lms_app/screens/auth/login_page.dart';
-import 'package:lms_app/screens/dashboard/dashboard_page.dart';
 import 'package:provider/provider.dart';
 
+import '../dashboard/dashboard_page.dart';
+import 'login_page.dart';
 import 'viewmodel/auth_viewmodel.dart';
 
 class AuthPage extends StatefulWidget {
