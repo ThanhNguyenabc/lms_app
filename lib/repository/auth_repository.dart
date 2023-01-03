@@ -5,17 +5,20 @@ import 'package:lms_app/models/result.dart';
 import 'package:lms_app/models/user.dart';
 import 'package:lms_app/service_locator.dart';
 
-String cookieKey = "cookie";
+import '../utils/string_util.dart';
 
 class AuthRepository {
   static String cookieId = "";
+  Box<dynamic> appBox;
+
+  AuthRepository({required this.appBox});
 
   Future<Result<User>> login(String username, String password) async {
     final res = await getIt<AppDio>().post<User>(
         params: {"f": "Core_Login"},
         data: {'user_id': username, 'password': password},
         transform: ((data) => User.fromMap(data)));
-
+    await appBox.put("isLogged", true);
     return res;
   }
 
@@ -25,7 +28,7 @@ class AuthRepository {
     return res;
   }
 
-  Future<Result<String>> getCookieId() async {
+  Future<Result<String>> getNewCookie() async {
     try {
       final res = await Dio().get(baseURL);
       final networkCookie =
@@ -36,10 +39,8 @@ class AuthRepository {
     }
   }
 
-  Future<Result<String?>> getCacheCookie() async {
+  Result<String?> getCacheCookie() {
     try {
-      final Box appBox = await getIt<HiveInterface>().openBox("app");
-
       final cookie = appBox.get(cookieKey);
       return Result.success(cookie);
     } catch (e) {
@@ -50,11 +51,6 @@ class AuthRepository {
 
   Future<Result<bool>> saveCookieToLocal(String cookie) async {
     try {
-      print("cookie====");
-      print(cookie);
-      final appBox = Hive.box('app');
-      print("app box");
-      print(appBox);
       await appBox.put(cookieKey, cookie);
       return Result.success(true);
     } catch (e) {
@@ -64,20 +60,21 @@ class AuthRepository {
     }
   }
 
-  Future<bool> getToken() async {
-    var cookie = (await getCacheCookie()).data;
+  Future<bool> getSession() async {
+    var cookie = (getCacheCookie()).data;
     if (cookie == null || cookie.isEmpty) {
-      final newCookie = (await getCookieId()).data;
-      print("new cookie");
-      print(newCookie);
+      final newCookie = (await getNewCookie()).data;
       if (newCookie == null) return false;
       cookie = newCookie;
-      AuthRepository.cookieId = cookie;
-      await setTimeZone();
       await saveCookieToLocal(cookie);
+      await setTimeZone();
     }
-    AuthRepository.cookieId = cookie;
-
     return true;
+  }
+
+  Future<bool> isAuthenticated() async {
+    final isLogged = appBox.get(isLoggedKey, defaultValue: false);
+    await getSession();
+    return isLogged;
   }
 }

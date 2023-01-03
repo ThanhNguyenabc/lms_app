@@ -12,16 +12,23 @@ class AuthViewModel extends BaseViewModel {
 
   @override
   Future<void> init() async {
-    await repository.getToken();
+    checkAutheticaton();
   }
 
-  Future<AuthStatus> login(String username, String password) async {
-    if (password.isEmpty || username.isEmpty) return AuthStatus.unauthenticated;
-    final Result<User> res = await repository.login(username, password);
-
-    if (res.data != null) {
+  void checkAutheticaton() async {
+    final isAuthenticated = await repository.isAuthenticated();
+    if (isAuthenticated) {
       authStatus = AuthStatus.authenticated;
     }
+  }
+
+  Future<AuthStatus?> login(String username, String password) async {
+    if (password.isEmpty || username.isEmpty) return null;
+    final Result<User> res = await repository.login(username, password);
+    authStatus = res.data != null
+        ? AuthStatus.authenticated
+        : AuthStatus.unauthenticated;
+
     return authStatus;
   }
 }

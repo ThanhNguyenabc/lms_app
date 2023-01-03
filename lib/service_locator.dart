@@ -18,16 +18,26 @@ Future<void> initDependency() async {
       return Hive;
     });
 
+  getIt.registerSingletonAsync<Box<dynamic>>(
+    () async {
+      final box = await getIt<HiveInterface>().openBox("app");
+      return box;
+    },
+    dependsOn: [HiveInterface],
+  );
+
   //register repositories
   getIt
-    ..registerSingletonAsync(() async => AuthRepository())
+    ..registerSingletonAsync<AuthRepository>(
+        () async => AuthRepository(appBox: getIt.get<Box>()),
+        dependsOn: [Box<dynamic>])
     ..registerFactory(() => LessonRepository());
 
 //register viewmodel
   getIt
-    ..registerSingletonAsync(
+    ..registerSingletonAsync<AuthViewModel>(
         () async => AuthViewModel(repository: getIt<AuthRepository>()),
-        dependsOn: [AuthRepository, HiveInterface])
+        dependsOn: [AuthRepository])
     ..registerFactory(
         () => LessonViewModel(repository: getIt<LessonRepository>()));
 }

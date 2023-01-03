@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
 import 'package:lms_app/api/app_dio.dart';
-import 'package:lms_app/repository/auth_repository.dart';
+import 'package:lms_app/service_locator.dart';
+import 'package:lms_app/utils/string_util.dart';
 
 class AuthInterceptor extends Interceptor {
   final AppDio dioClient;
@@ -10,9 +12,7 @@ class AuthInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    print("cookie");
-    print(AuthRepository.cookieId);
-    options.headers.addAll({"cookie": AuthRepository.cookieId});
+    options.headers.addAll({"cookie": getIt.get<Box>().get(cookieKey)});
     super.onRequest(options, handler);
   }
 }

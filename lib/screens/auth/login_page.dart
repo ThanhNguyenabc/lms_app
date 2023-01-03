@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lms_app/base/view/base_view.dart';
 import 'package:lms_app/models/auth_status.dart';
-import 'package:lms_app/models/lesson.dart';
 import 'package:lms_app/screens/auth/viewmodel/auth_viewmodel.dart';
 import 'package:lms_app/screens/dashboard/dashboard_page.dart';
 import 'package:lms_app/service_locator.dart';
@@ -15,7 +14,6 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Lesson.getTimeStart("202212091009"));
     return BaseView(
         vmBuilder: (context) => getIt<AuthViewModel>(),
         builder: (BuildContext context) {
@@ -26,7 +24,15 @@ class LoginPage extends StatelessWidget {
                 return Column(
                   children: [
                     const SizedBox(
-                      height: 200,
+                      height: 100,
+                    ),
+                    Image.asset(
+                      "asset/images/logo.png",
+                      width: 80,
+                      height: 80,
+                    ),
+                    const SizedBox(
+                      height: 32,
                     ),
                     TextFormField(
                       controller: userController,
