@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lms_app/_widgets/sliding_card.dart';
 import 'package:lms_app/api/app_dio.dart';
 import 'package:lms_app/base/view/base_view.dart';
@@ -45,10 +46,11 @@ class _LessonPageState extends State<LessonPage> {
 
   @override
   Widget build(BuildContext context) {
+    final imageSize = MediaQuery.of(context).size.height * 0.3;
     return Center(
       child: Consumer(builder: ((context, LessonViewModel vm, child) {
         return SizedBox(
-          height: 450,
+          height: 350,
           child: PageView.builder(
             controller: pageController,
             itemCount: vm.pastLessons.length,
@@ -64,31 +66,54 @@ class _LessonPageState extends State<LessonPage> {
                           const BorderRadius.vertical(top: Radius.circular(32)),
                       child: Image.network(
                         "$baseURL/content/lessons/${item.lessonId}/cover.png",
-                        height: MediaQuery.of(context).size.height * 0.3,
+                        height: imageSize,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
                             color: Colors.grey[300],
-                            height: MediaQuery.of(context).size.height * 0.3,
+                            height: imageSize,
                           );
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        item.title?.en ?? "No name",
-                        style: Theme.of(context).textTheme.headline5,
+                    Expanded(
+                        child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(32),
+                            bottomRight: Radius.circular(32)),
+                        color: Colors.blue.shade400,
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8, left: 16, right: 16),
-                      child: Text(
-                        item.dateStart ?? "No name",
-                        style: Theme.of(context).textTheme.headline5,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            item.title?.en ?? "Unknow",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(color: Colors.white),
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            item.dateStart != null
+                                ? DateFormat("E, MMM dd, HH:mm")
+                                    .format(item.dateStart!)
+                                : "",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(color: Colors.white),
+                          )
+                        ],
                       ),
-                    )
+                    ))
                   ],
                 ),
               );

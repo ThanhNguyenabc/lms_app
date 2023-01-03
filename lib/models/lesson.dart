@@ -6,7 +6,7 @@ import 'package:lms_app/models/Attribute.dart';
 
 class Lesson {
   String? id;
-  String? dateStart;
+  DateTime? dateStart;
   String? teacherId;
   String? lessonId;
   String? duration;
@@ -39,10 +39,11 @@ class Lesson {
   factory Lesson.fromMap(Map<String, dynamic> map) {
     final lessonInfo =
         map['lesson'] != null ? map['lesson'] as Map<String, dynamic> : null;
+    final dateStart =
+        map['date_start'] != null ? map['date_start'] as String : null;
     return Lesson(
         id: map['id'] != null ? map['id'] as String : null,
-        dateStart:
-            map['date_start'] != null ? map['date_start'] as String : null,
+        dateStart: dateStart != null  ? getTimeStart(dateStart) : null ,
         teacherId:
             map['teacher_id'] != null ? map['teacher_id'] as String : null,
         lessonId: map['lesson_id'] != null ? map['lesson_id'] as String : null,
