@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lms_app/api/app_dio.dart';
+import 'package:lms_app/features/lesson_detail/lesson_detail_viewmodel.dart';
 import 'package:lms_app/repository/auth_repository.dart';
 import 'package:lms_app/repository/lesson_repository.dart';
 import 'package:lms_app/features/auth/viewmodel/auth_viewmodel.dart';
@@ -31,13 +32,15 @@ Future<void> initDependency() async {
     ..registerSingletonAsync<AuthRepository>(
         () async => AuthRepository(appBox: getIt.get<Box>()),
         dependsOn: [Box<dynamic>])
-    ..registerFactory(() => LessonRepository());
+    ..registerSingleton<LessonRepository>(LessonRepository());
 
 //register viewmodel
   getIt
     ..registerSingletonAsync<AuthViewModel>(
         () async => AuthViewModel(repository: getIt<AuthRepository>()),
         dependsOn: [AuthRepository])
-    ..registerFactory(
-        () => LessonViewModel(repository: getIt<LessonRepository>()));
+    ..registerFactory<LessonViewModel>(
+        () => LessonViewModel(repository: getIt<LessonRepository>()))
+    ..registerFactory<LessonDetailViewModel>(
+        () => LessonDetailViewModel(repository: getIt<LessonRepository>()));
 }

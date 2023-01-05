@@ -42,6 +42,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   intl: ^0.18.0
+  go_router: ^6.0.0
+  fl_chart: ^0.55.2
 
 dev_dependencies:
   flutter_test:
