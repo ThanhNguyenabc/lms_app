@@ -10,8 +10,6 @@ class LessonViewModel extends BaseViewModel {
   void getPastLesson() async {
     final result =
         await repository.getListLesson("000101010000", "202212220000");
-    print("lesson id ");
-    print(result.data?[0].lessonId);
     pastLessons = result.data?.reversed.toList() ?? [];
     notifyListeners();
   }
