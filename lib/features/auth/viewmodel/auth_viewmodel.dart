@@ -9,26 +9,30 @@ class AuthViewModel extends BaseViewModel {
   AuthViewModel({required this.repository});
 
   AuthStatus authStatus = AuthStatus.unauthenticated;
-
+  User? currentUser;
+  String? errorMessage;
   @override
   Future<void> init() async {
     checkAutheticaton();
   }
 
   void checkAutheticaton() async {
-    final isAuthenticated = await repository.isAuthenticated();
-    if (isAuthenticated) {
+    final cacheUser = await repository.isAuthenticated();
+    if (cacheUser != null) {
       authStatus = AuthStatus.authenticated;
+      currentUser = cacheUser;
     }
   }
 
-  Future<AuthStatus?> login(String username, String password) async {
-    if (password.isEmpty || username.isEmpty) return null;
+  void login(String username, String password) async {
+    setLoading(true);
     final Result<User> res = await repository.login(username, password);
-    authStatus = res.data != null
-        ? AuthStatus.authenticated
-        : AuthStatus.unauthenticated;
-
-    return authStatus;
+    if (res.status == Status.success) {
+      currentUser = res.data;
+      authStatus = AuthStatus.authenticated;
+    } else if (res.status == Status.error) {
+      errorMessage = res.message;
+    }
+    setLoading(false);
   }
 }

@@ -18,7 +18,9 @@ class AuthRepository {
         params: {"f": "Core_Login"},
         data: {'user_id': username, 'password': password},
         transform: ((data) => User.fromMap(data)));
-    await appBox.put("isLogged", true);
+    if (res.data != null) {
+      await appBox.putAll({isLoggedKey: true, userKey: res.data?.toMap()});
+    }
     return res;
   }
 
@@ -44,7 +46,6 @@ class AuthRepository {
       final cookie = appBox.get(cookieKey);
       return Result.success(cookie);
     } catch (e) {
-      print(e);
       return Result.error(e.toString());
     }
   }
@@ -54,8 +55,6 @@ class AuthRepository {
       await appBox.put(cookieKey, cookie);
       return Result.success(true);
     } catch (e) {
-      print("save cookie local");
-      print(e);
       return Result.success(false);
     }
   }
@@ -72,9 +71,14 @@ class AuthRepository {
     return true;
   }
 
-  Future<bool> isAuthenticated() async {
+  Future<User?> isAuthenticated() async {
     final isLogged = appBox.get(isLoggedKey, defaultValue: false);
+    final userInfo = appBox.get(userKey, defaultValue: {});
     await getSession();
-    return isLogged;
+
+    if (isLogged && userInfo.isNotEmpty) {
+      return User.fromMap(Map<String, dynamic>.from(userInfo));
+    }
+    return null;
   }
 }
