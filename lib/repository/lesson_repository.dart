@@ -1,6 +1,7 @@
 import 'package:lms_app/api/app_dio.dart';
 import 'package:lms_app/models/lesson.dart';
 import 'package:lms_app/models/lesson_detail.dart';
+import 'package:lms_app/models/next_lesson.dart';
 import 'package:lms_app/models/overall_progress.dart';
 import 'package:lms_app/models/result.dart';
 import 'package:lms_app/service_locator.dart';
@@ -61,6 +62,14 @@ class LessonRepository {
 
           return progressData;
         }));
+    return res;
+  }
+
+  Future<Result<NextLesson>> getNextLesson(String studentId) async {
+    final res = await getIt<AppDio>().post<NextLesson>(
+        params: {"f": "Api_Get_Next_Lesson"},
+        data: {"student_id": studentId},
+        transform: ((data) => NextLesson.fromMap(data)));
     return res;
   }
 }
