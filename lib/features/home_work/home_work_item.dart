@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:lms_app/_widgets/network_image.dart';
 import '../../utils/string_util.dart';
 
 class HomeworkItem extends StatelessWidget {
@@ -27,7 +28,6 @@ class HomeworkItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double coverHeight = boxHeight - 40;
-    print(chartData.length);
     return SizedBox(
       height: boxHeight,
       width: double.infinity,
@@ -36,27 +36,11 @@ class HomeworkItem extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Image.network(
-                  "$baseURL/$imagePath",
+                NetWorkImage(
+                  url: "$baseURL/$imagePath",
                   height: coverHeight,
                   width: coverHeight,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: coverHeight,
-                      width: coverHeight,
-                      color: Colors.grey.shade300,
-                      child: Center(
-                        child: Text(
-                          "no image",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: Colors.grey),
-                        ),
-                      ),
-                    );
-                  },
+                  boxFit: BoxFit.cover,
                 ),
                 const Spacer(),
                 Text(

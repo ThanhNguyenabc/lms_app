@@ -19,8 +19,7 @@ class HomeworkCard extends StatelessWidget {
       vmBuilder: (_) => lessonDetailViewModel,
       builder: ((p0) {
         lessonDetailViewModel.getLessonDetail(lesson.id!);
-        print("lesson id");
-        print(lesson.id);
+
         return Consumer(
           builder: ((BuildContext context, LessonDetailViewModel viewModel,
               Widget? child) {
@@ -29,21 +28,18 @@ class HomeworkCard extends StatelessWidget {
               return Container(
                 color: Colors.grey.shade200,
                 child: ListView(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.width / 4,
-                    ),
                     Text(
                       "Lesson: ${lesson.title?.en ?? "unknown"}",
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     Text(
                       "Time: ${formatLessonDate(lesson.dateStart!)}",
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(
                       height: 48,
