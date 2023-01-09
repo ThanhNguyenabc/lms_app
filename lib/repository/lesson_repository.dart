@@ -1,6 +1,7 @@
 import 'package:lms_app/api/app_dio.dart';
 import 'package:lms_app/models/lesson.dart';
 import 'package:lms_app/models/lesson_detail.dart';
+import 'package:lms_app/models/overall_progress.dart';
 import 'package:lms_app/models/result.dart';
 import 'package:lms_app/service_locator.dart';
 
@@ -47,6 +48,18 @@ class LessonRepository {
             "detail": lessonDetail
           };
           return lessonDetail;
+        }));
+    return res;
+  }
+
+  Future<Result<OverallProgress>> getStudentProgress(String studentId) async {
+    final res = await getIt<AppDio>().post<OverallProgress>(
+        params: {"f": "Api_Get_Progress"},
+        data: {"student_id": studentId},
+        transform: ((data) {
+          final progressData = OverallProgress.fromMap(data);
+
+          return progressData;
         }));
     return res;
   }

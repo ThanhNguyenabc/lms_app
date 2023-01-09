@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-// import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lms_app/api/app_dio.dart';
 import 'package:lms_app/features/lesson_detail/lesson_detail_viewmodel.dart';
+import 'package:lms_app/features/next_lesson/next_lesson_viewmodel.dart';
 import 'package:lms_app/features/overall_progress/overall_progress_viewmodel.dart';
 import 'package:lms_app/repository/auth_repository.dart';
 import 'package:lms_app/repository/lesson_repository.dart';
@@ -45,5 +45,7 @@ Future<void> initDependency() async {
     ..registerFactory<LessonDetailViewModel>(
         () => LessonDetailViewModel(repository: getIt<LessonRepository>()))
     ..registerFactory<OverallProgressViewModel>(
-        () => OverallProgressViewModel(repository: getIt<LessonRepository>()));
+        () => OverallProgressViewModel(repository: getIt<LessonRepository>()))
+    ..registerFactory<NextLessonViewModel>(
+        () => NextLessonViewModel(repository: getIt<LessonRepository>()));
 }

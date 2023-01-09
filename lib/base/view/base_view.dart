@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lms_app/_widgets/loading.dart';
 import 'package:lms_app/base/viewmodel/base_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
   final T Function(BuildContext) vmBuilder;
-  final Widget Function(BuildContext) builder;
+  final Widget Function(
+    BuildContext,
+  ) builder;
 
   const BaseView({super.key, required this.vmBuilder, required this.builder});
 
@@ -20,6 +23,7 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
       builder: (BuildContext pContext, child) {
         return widget.builder(pContext);
       },
+      child: const Loading(),
     );
   }
 }

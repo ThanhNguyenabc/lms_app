@@ -40,28 +40,6 @@ class User {
     };
   }
 
-  Map<String, dynamic> toMap2() {
-    return {
-      'role': role,
-      'password': password,
-      'firstname': firstname,
-      'lastname': lastname,
-      'nickname': nickname,
-      'email': email,
-      'mobile': mobile,
-    };
-  }
-
-  Map<String, dynamic> toMap3() {
-    return {
-      'id': id,
-      'role': role,
-      'password': password,
-      'firstname': firstname,
-      'lastname': lastname,
-    };
-  }
-
   String toJson() => json.encode(toMap());
 
   factory User.fromJson(String source) => User.fromMap(json.decode(source));
