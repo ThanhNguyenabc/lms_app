@@ -10,12 +10,12 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Platform.isIOS || Platform.isMacOS) {
       return const CupertinoActivityIndicator(
-        color: Colors.purple,
+        color: Colors.blue,
         radius: 16,
       );
     }
     return const CircularProgressIndicator(
-      color: Colors.purple,
+      color: Colors.blue,
     );
   }
 }

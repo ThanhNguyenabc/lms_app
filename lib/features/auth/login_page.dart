@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:lms_app/_widgets/loading.dart';
 import 'package:lms_app/models/auth_status.dart';
+import 'package:lms_app/service_locator.dart';
 import 'package:provider/provider.dart';
 import '../dashboard/dashboard_page.dart';
 import 'viewmodel/auth_viewmodel.dart';
@@ -18,34 +19,38 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController userController = TextEditingController();
 
   final TextEditingController pwdController = TextEditingController();
+  final AuthViewModel authViewModel = getIt.get<AuthViewModel>();
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      final viewModel = context.read<AuthViewModel>();
-      viewModel.addListener(() {
-        if (viewModel.isLoading) {
-          showLoginDialog(context);
-        } else if (!viewModel.isLoading) {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-
-        if (viewModel.errorMessage?.isNotEmpty == true) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("OOPS! Your user name or password is incorrect")));
-          return;
-        }
-
-        if (viewModel.authStatus == AuthStatus.authenticated) {
-          Navigator.popAndPushNamed(context, DashBoardPage.route);
-        }
-      });
+      authViewModel.addListener(authListener);
     });
+  }
+
+  void authListener() {
+    print("auth viewmodel call");
+    if (authViewModel.isLoading) {
+      showLoginDialog(context);
+    } else if (!authViewModel.isLoading) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+
+    if (authViewModel.errorMessage?.isNotEmpty == true) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("OOPS! Your user name or password is incorrect")));
+      return;
+    }
+
+    if (authViewModel.authStatus == AuthStatus.authenticated) {
+      Navigator.popAndPushNamed(context, DashBoardPage.route);
+    }
   }
 
   @override
   void dispose() {
+    authViewModel.removeListener(authListener);
     userController.dispose();
     pwdController.dispose();
     super.dispose();

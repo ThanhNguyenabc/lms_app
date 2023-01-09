@@ -11,6 +11,7 @@ class AuthViewModel extends BaseViewModel {
   AuthStatus authStatus = AuthStatus.unauthenticated;
   User? currentUser;
   String? errorMessage;
+
   @override
   Future<void> init() async {
     checkAutheticaton();
@@ -25,6 +26,7 @@ class AuthViewModel extends BaseViewModel {
   }
 
   void login(String username, String password) async {
+    errorMessage = null;
     setLoading(true);
     final Result<User> res = await repository.login(username, password);
     if (res.status == Status.success) {
@@ -34,5 +36,14 @@ class AuthViewModel extends BaseViewModel {
       errorMessage = res.message;
     }
     setLoading(false);
+  }
+
+  Future<bool> logout() async {
+    setLoading(true);
+    await repository.logout();
+    authStatus = AuthStatus.unauthenticated;
+    currentUser = null;
+    setLoading(false);
+    return true;
   }
 }

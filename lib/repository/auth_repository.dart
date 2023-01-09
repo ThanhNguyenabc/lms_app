@@ -14,6 +14,7 @@ class AuthRepository {
   AuthRepository({required this.appBox});
 
   Future<Result<User>> login(String username, String password) async {
+    await getSession();
     final res = await getIt<AppDio>().post<User>(
         params: {"f": "Core_Login"},
         data: {'user_id': username, 'password': password},
@@ -22,6 +23,12 @@ class AuthRepository {
       await appBox.putAll({isLoggedKey: true, userKey: res.data?.toMap()});
     }
     return res;
+  }
+
+  Future<bool> logout() async {
+    await getIt<AppDio>().post(params: {"f": "Core_Logout"});
+    await appBox.clear();
+    return true;
   }
 
   Future<Result<void>> setTimeZone() async {

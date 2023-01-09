@@ -3,7 +3,7 @@ import 'package:lms_app/api/auth_interceptor.dart';
 import 'package:lms_app/main.dart';
 import 'package:lms_app/models/result.dart';
 
-const baseURL = "https://dev.ila.edu.vn/lms/lab";
+import '../utils/string_util.dart';
 
 class HttpMethod {
   static const String get = "GET";
@@ -55,25 +55,25 @@ class AppDio {
     Map<String, dynamic>? requestData,
   }) async {
     try {
-      final response = await _dioClient.request(
-        path ?? '',
-        options: Options(method: method),
-        queryParameters: params,
-        data: requestData,
-      );
+    final response = await _dioClient.request(
+      path ?? '',
+      options: Options(method: method),
+      queryParameters: params,
+      data: requestData,
+    );
 
-      final statusCode = response.statusCode;
+    final statusCode = response.statusCode;
 
-      if (statusCode != 200) return Result.error("OOps! Something is wrong");
+    if (statusCode != 200) return Result.error("OOps! Something is wrong");
 
-      var data = response.data;
+    var data = response.data;
 
-      if (data != null && data is String) {
-        data = data.trim();
-        data = parseSafe(data);
-      }
+    if (data != null && data is String) {
+      data = data.trim();
+      data = parseSafe(data);
+    }
 
-      return Result.success(transform?.call(data) ?? data);
+    return Result.success(transform?.call(data) ?? data);
     } catch (e) {
       print("---------error-------");
       print(e);
