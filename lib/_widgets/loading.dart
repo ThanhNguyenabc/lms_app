@@ -14,8 +14,14 @@ class Loading extends StatelessWidget {
         radius: 16,
       );
     }
-    return const CircularProgressIndicator(
-      color: Colors.blue,
+    return Center(
+      child: Stack(
+        children: const [
+          CircularProgressIndicator(
+            color: Colors.blue,
+          ),
+        ],
+      ),
     );
   }
 }

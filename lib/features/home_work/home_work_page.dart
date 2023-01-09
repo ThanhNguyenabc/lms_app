@@ -35,14 +35,5 @@ class _HomeWorkPageState extends State<HomeWorkPage> {
         )
       ],
     );
-    // return PageView.builder(
-    //   itemBuilder: ((context, index) {
-    //     final lesson = lessonList[index];
-    //     return HomeworkCard(
-    //       lesson: lesson,
-    //     );
-    //   }),
-    //   itemCount: lessonList.length,
-    // );
   }
 }

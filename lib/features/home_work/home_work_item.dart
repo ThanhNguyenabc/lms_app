@@ -81,6 +81,7 @@ class HomeworkItem extends StatelessWidget {
                         PieChartData(sections: [
                           PieChartSectionData(color: Colors.grey.shade400),
                         ]),
+                        swapAnimationCurve: Curves.bounceIn,
                       ),
                       const Center(
                         child: Text(

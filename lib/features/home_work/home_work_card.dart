@@ -4,9 +4,9 @@ import 'package:lms_app/base/view/base_view.dart';
 import 'package:lms_app/features/lesson_detail/lesson_detail_viewmodel.dart';
 import 'package:lms_app/models/lesson.dart';
 import 'package:lms_app/service_locator.dart';
-import 'package:lms_app/utils/date_util.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/date_util.dart';
 import 'home_work_item.dart';
 
 class HomeworkCard extends StatelessWidget {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lms_app/_widgets/keep_alive.dart';
 import 'package:lms_app/base/view/base_view.dart';
@@ -57,13 +59,16 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("dashboard page");
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-          child: KeepAliveWidget(
-        child: BaseView(
-          vmBuilder: (p0) => getIt.get<LessonViewModel>(),
-          builder: (p0) => pages[_currentIndex],
+          child: Padding(
+        padding: EdgeInsets.only(top: Platform.isAndroid ? 24 : 0),
+        child: KeepAliveWidget(
+          child: BaseView(
+            vmBuilder: (p0) => getIt.get<LessonViewModel>(),
+            builder: (p0) => pages[_currentIndex],
+          ),
         ),
       )),
       bottomNavigationBar: BottomNavigationBar(
