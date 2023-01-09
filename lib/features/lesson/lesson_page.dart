@@ -1,31 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:lms_app/_widgets/network_image.dart';
 import 'package:lms_app/_widgets/sliding_card.dart';
-import 'package:lms_app/api/app_dio.dart';
-import 'package:lms_app/base/view/base_view.dart';
+import 'package:lms_app/features/lesson_detail/lesson_detail_page.dart';
 import 'package:lms_app/models/lesson.dart';
-import 'package:lms_app/service_locator.dart';
+import 'package:lms_app/utils/date_util.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/string_util.dart';
 import 'viewmodel/lesson_viewmodel.dart';
-
-class LessonA extends StatelessWidget {
-  const LessonA({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BaseView(
-      vmBuilder: (_) => getIt<LessonViewModel>(),
-      builder: ((p0) {
-        return const LessonPage();
-      }),
-    );
-  }
-}
 
 class LessonPage extends StatefulWidget {
   const LessonPage({super.key});
-
+  static const route = "/lesson";
   @override
   State<LessonPage> createState() => _LessonPageState();
 }
@@ -46,8 +32,8 @@ class _LessonPageState extends State<LessonPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.height * 0.3;
+  Widget build(BuildContext pContext) {
+    final imageSize = MediaQuery.of(pContext).size.height * 0.3;
     return Center(
       child: Consumer(builder: ((context, LessonViewModel vm, child) {
         return SizedBox(
@@ -58,7 +44,7 @@ class _LessonPageState extends State<LessonPage> {
             itemBuilder: (context, index) {
               final item = vm.pastLessons[index];
               return InkWell(
-                onTap: () => onClickItem(item),
+                onTap: () => onClickItem(context, item),
                 child: SlidingCard(
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -67,16 +53,10 @@ class _LessonPageState extends State<LessonPage> {
                       ClipRRect(
                         borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(32)),
-                        child: Image.network(
-                          "$baseURL/content/lessons/${item.lessonId}/cover.png",
+                        child: NetWorkImage(
+                          url: getLessonCover(item.lessonId!),
                           height: imageSize,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: Colors.grey[300],
-                              height: imageSize,
-                            );
-                          },
+                          boxFit: BoxFit.cover,
                         ),
                       ),
                       Expanded(
@@ -106,8 +86,7 @@ class _LessonPageState extends State<LessonPage> {
                             ),
                             Text(
                               item.dateStart != null
-                                  ? DateFormat("E, MMM dd, HH:mm")
-                                      .format(item.dateStart!)
+                                  ? formatLessonDate(item.dateStart!)
                                   : "",
                               style: Theme.of(context)
                                   .textTheme
@@ -128,5 +107,8 @@ class _LessonPageState extends State<LessonPage> {
     );
   }
 
-  onClickItem(Lesson item) {}
+  onClickItem(BuildContext context, Lesson item) {
+    Navigator.of(context)
+        .pushNamed(LessonDetailPage.route, arguments: {"lessonId": item.id});
+  }
 }
