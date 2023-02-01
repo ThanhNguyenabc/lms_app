@@ -16,29 +16,10 @@ class NetWorkImage extends StatelessWidget {
       fit: boxFit,
       errorBuilder: ((context, error, stackTrace) {
         return Container(
-            color: Colors.grey[300],
-            width: width,
-            height: height,
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "asset/images/oops.png",
-                    width: 30,
-                    height: 30,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "invalid image url",
-                    style: Theme.of(context).textTheme.caption,
-                  )
-                ],
-              ),
-            ));
+          color: Colors.grey[300],
+          width: width,
+          height: height,
+        );
       }),
     );
   }

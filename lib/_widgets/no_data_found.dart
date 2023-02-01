@@ -14,10 +14,6 @@ class NoDataFound extends StatelessWidget {
           Image.asset("asset/images/no_data.png"),
           const SizedBox(
             height: 12,
-          ),
-          Text(
-            "Oops! no data found in our system",
-            style: Theme.of(context).textTheme.bodyLarge,
           )
         ],
       ),
