@@ -6,15 +6,21 @@ import 'package:lms_app/repository/lesson_repository.dart';
 class LessonViewModel extends BaseViewModel {
   LessonViewModel({required this.repository});
   final LessonRepository repository;
-  List<Lesson> pastLessons = [];
+  List<Lesson> lessons = [];
+  int currentLessonIndex = -1;
 
-  void getPastLesson() async {
-    final currentDate = DateFormat("yyyyMMdd")
-        .format(DateTime.now().subtract(const Duration(days: 1)));
+  void getListLesson() async {
+    final currentTime = DateTime.now();
+    final nextMonth = currentTime.add(const Duration(days: 30));
 
-    final result =
-        await repository.getListLesson("000101010000", "${currentDate}0000");
-    pastLessons = result.data?.reversed.toList() ?? [];
+    final result = await repository.getListLesson(
+        "000101010000", "${DateFormat("yyyyMMdd").format(nextMonth)}0000");
+
+    currentLessonIndex = result.data?.lastIndexWhere(
+            (element) => currentTime.compareTo(element.dateStart!) == 1) ??
+        -1;
+
+    lessons = result.data?.toList() ?? [];
     notifyListeners();
   }
 }
