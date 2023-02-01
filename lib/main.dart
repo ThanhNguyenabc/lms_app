@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lms_app/app_routes.dart';
 import 'package:lms_app/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:lms_app/features/lesson/viewmodel/lesson_viewmodel.dart';
 import 'package:lms_app/service_locator.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => getIt<AuthViewModel>()),
+        ChangeNotifierProvider(create: (_) => getIt<LessonViewModel>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

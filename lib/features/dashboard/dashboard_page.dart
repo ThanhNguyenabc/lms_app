@@ -2,14 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:lms_app/_widgets/keep_alive.dart';
-import 'package:lms_app/base/view/base_view.dart';
-import 'package:lms_app/features/home_work/home_work_page.dart';
 import 'package:lms_app/features/lesson/lesson_page.dart';
-import 'package:lms_app/features/lesson/viewmodel/lesson_viewmodel.dart';
 import 'package:lms_app/features/setting/setting_page.dart';
 import 'package:lms_app/features/next_lesson/next_lesson_page.dart';
 import 'package:lms_app/features/overall_progress/skill_progress_page.dart';
-import 'package:lms_app/service_locator.dart';
 
 class ScaffoldWithNavBarTabItem extends BottomNavigationBarItem {
   ScaffoldWithNavBarTabItem(
@@ -29,14 +25,11 @@ class DashBoardPage extends StatefulWidget {
 
 class _DashBoardPageState extends State<DashBoardPage> {
   int _currentIndex = 0;
+  final pageController = PageController();
 
   final tabs = [
     ScaffoldWithNavBarTabItem(
         icon: const Icon(Icons.home), label: 'Lesson', path: "/lesson"),
-    ScaffoldWithNavBarTabItem(
-        icon: const Icon(Icons.home_work),
-        label: 'Homework',
-        path: "/homework"),
     ScaffoldWithNavBarTabItem(
         icon: const Icon(Icons.area_chart),
         label: ' Progress',
@@ -49,13 +42,24 @@ class _DashBoardPageState extends State<DashBoardPage> {
         icon: const Icon(Icons.settings), label: 'Setting', path: "/setting")
   ];
 
-  final pages = const [
-    KeepAliveWidget(child: LessonPage()),
-    HomeWorkPage(),
-    SkillProgressPage(),
-    NextLessonPage(),
-    SettingPage()
-  ];
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    super.initState();
+    pages = const [
+      KeepAliveWidget(child: LessonPage()),
+      KeepAliveWidget(child: SkillProgressPage()),
+      KeepAliveWidget(child: NextLessonPage()),
+      KeepAliveWidget(child: SettingPage())
+    ];
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +67,12 @@ class _DashBoardPageState extends State<DashBoardPage> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Padding(
-        padding: EdgeInsets.only(top: Platform.isAndroid ? 24 : 0),
-        child: KeepAliveWidget(
-          child: BaseView(
-            vmBuilder: (p0) => getIt.get<LessonViewModel>(),
-            builder: (p0) => pages[_currentIndex],
-          ),
-        ),
-      )),
+              padding: EdgeInsets.only(top: Platform.isAndroid ? 24 : 0),
+              child: PageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: pages,
+              ))),
       bottomNavigationBar: BottomNavigationBar(
         items: tabs,
         currentIndex: _currentIndex,
@@ -84,6 +86,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
   void _onItemTapped(BuildContext context, int index) {
     if (_currentIndex != index) {
+      pageController.jumpToPage(index);
       setState(() {
         _currentIndex = index;
       });
