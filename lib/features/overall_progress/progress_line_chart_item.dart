@@ -13,7 +13,7 @@ class ProgressLineChartItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AspectRatio(
-        aspectRatio: 1,
+        aspectRatio: 0.8,
         child: LineChart(
           LineChartData(
               gridData: FlGridData(

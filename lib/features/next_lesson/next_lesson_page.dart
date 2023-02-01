@@ -38,14 +38,6 @@ class _NextLessonPageState extends State<NextLessonPage> {
               }
               return ListView(
                 children: [
-                  Text(
-                    "Your next lesson",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
                   Stack(
                     children: [
                       ColorFiltered(
