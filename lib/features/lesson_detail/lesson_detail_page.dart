@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lms_app/base/view/base_view.dart';
+import 'package:lms_app/features/home_work/home_work_card.dart';
 import 'package:lms_app/features/lesson_detail/lesson_detail_viewmodel.dart';
 import 'package:lms_app/service_locator.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,33 @@ class _LessonDetailPageState extends State<LessonDetailPage> {
                     itemBuilder: ((context, index) {
                       switch (index) {
                         case 0:
+                          return AssessmentCard(
+                              items: lessonAimItems,
+                              title: "Lesson aims",
+                              imagePath: "asset/images/outcome.jpeg");
+                        case 1:
+                          return AssessmentCard(
+                              items: [
+                                Rating(
+                                    rate: int.parse(coreSkill?.speaking ?? "0"),
+                                    text: "Speaking"),
+                                Rating(
+                                    rate:
+                                        int.parse(coreSkill?.listening ?? "0"),
+                                    text: "Listening"),
+                                Rating(
+                                    rate: int.parse(coreSkill?.writing ?? "0"),
+                                    text: "Writing"),
+                                Rating(
+                                    rate: int.parse(coreSkill?.reading ?? "0"),
+                                    text: "Reading")
+                              ],
+                              title: "Core skills",
+                              imagePath: "asset/images/core_skill.jpeg");
+
+                        case 2:
+                          return HomeworkCard(lessonDetail: vm.lessonDetail!);
+                        case 3:
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -79,37 +107,14 @@ class _LessonDetailPageState extends State<LessonDetailPage> {
                               ),
                             ],
                           );
-                        case 1:
-                          return AssessmentCard(
-                              items: lessonAimItems,
-                              title: "Lesson aims",
-                              imagePath: "asset/images/outcome.jpeg");
-                        case 2:
-                          return AssessmentCard(
-                              items: [
-                                Rating(
-                                    rate: int.parse(coreSkill?.speaking ?? "0"),
-                                    text: "Speaking"),
-                                Rating(
-                                    rate:
-                                        int.parse(coreSkill?.listening ?? "0"),
-                                    text: "Listening"),
-                                Rating(
-                                    rate: int.parse(coreSkill?.writing ?? "0"),
-                                    text: "Writing"),
-                                Rating(
-                                    rate: int.parse(coreSkill?.reading ?? "0"),
-                                    text: "Reading")
-                              ],
-                              title: "Core skills",
-                              imagePath: "asset/images/core_skill.jpeg");
                       }
+
                       return const SizedBox();
                     }),
                     separatorBuilder: ((context, index) => const SizedBox(
                           height: 20,
                         )),
-                    itemCount: 3);
+                    itemCount: 4);
               }));
             })));
   }
