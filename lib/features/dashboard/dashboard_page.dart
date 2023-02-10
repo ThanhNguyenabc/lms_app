@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:lms_app/_widgets/keep_alive.dart';
 import 'package:lms_app/features/lesson/lesson_page.dart';
+import 'package:lms_app/features/lesson_detail/lesson_detail_page.dart';
 import 'package:lms_app/features/setting/setting_page.dart';
-import 'package:lms_app/features/next_lesson/next_lesson_page.dart';
-import 'package:lms_app/features/overall_progress/skill_progress_page.dart';
+import 'package:lms_app/features/overall_progress/progress_page.dart';
 
 class ScaffoldWithNavBarTabItem extends BottomNavigationBarItem {
   ScaffoldWithNavBarTabItem(
@@ -27,19 +25,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
   int _currentIndex = 0;
   final pageController = PageController();
 
-  final tabs = [
-    ScaffoldWithNavBarTabItem(
-        icon: const Icon(Icons.home), label: 'Lesson', path: "/lesson"),
-    ScaffoldWithNavBarTabItem(
-        icon: const Icon(Icons.area_chart),
-        label: ' Progress',
-        path: "/progress"),
-    ScaffoldWithNavBarTabItem(
-        icon: const Icon(Icons.next_plan),
-        label: 'NextLesson',
-        path: "/progress"),
-    ScaffoldWithNavBarTabItem(
-        icon: const Icon(Icons.settings), label: 'Setting', path: "/setting")
+  final tabs = const [
+    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Lesson'),
+    BottomNavigationBarItem(icon: Icon(Icons.area_chart), label: ' Progress'),
+    BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting')
   ];
 
   late List<Widget> pages;
@@ -47,11 +36,21 @@ class _DashBoardPageState extends State<DashBoardPage> {
   @override
   void initState() {
     super.initState();
-    pages = const [
-      KeepAliveWidget(child: LessonPage()),
-      KeepAliveWidget(child: SkillProgressPage()),
-      KeepAliveWidget(child: NextLessonPage()),
-      KeepAliveWidget(child: SettingPage())
+    pages = [
+      KeepAliveWidget(
+        child: Navigator(
+          onGenerateRoute: (settings) {
+            Widget page = const LessonPage();
+            if (settings.name == LessonDetailPage.route) {
+              final params = (settings.arguments as Map<String, String?>);
+              page = LessonDetailPage(params: params);
+            }
+            return MaterialPageRoute(builder: (_) => page);
+          },
+        ),
+      ),
+      const KeepAliveWidget(child: ProgressPage()),
+      const KeepAliveWidget(child: SettingPage())
     ];
   }
 
@@ -66,13 +65,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-          child: Padding(
-              padding: EdgeInsets.only(top: Platform.isAndroid ? 24 : 0),
-              child: PageView(
-                controller: pageController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: pages,
-              ))),
+          child: PageView(
+        controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: pages,
+      )),
       bottomNavigationBar: BottomNavigationBar(
         items: tabs,
         currentIndex: _currentIndex,
