@@ -10,10 +10,10 @@ class ProgressLineChartItem extends StatelessWidget {
   final List<FlSpot> spotData;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: AspectRatio(
-        aspectRatio: 0.8,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: LineChart(
           LineChartData(
               gridData: FlGridData(
@@ -75,12 +75,12 @@ class ProgressLineChartItem extends StatelessWidget {
                         }
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
+                        padding: const EdgeInsets.only(right: 2),
                         child: Text(text,
-                            style: Theme.of(context).textTheme.bodyText1),
+                            style: Theme.of(context).textTheme.titleMedium),
                       );
                     },
-                    reservedSize: 70,
+                    reservedSize: 80,
                   ),
                 ),
               ),
@@ -93,7 +93,7 @@ class ProgressLineChartItem extends StatelessWidget {
               minX: 0,
               maxX: 11,
               minY: 0,
-              maxY: 10,
+              maxY: 11.7,
               lineBarsData: [
                 LineChartBarData(
                   gradient: LinearGradient(

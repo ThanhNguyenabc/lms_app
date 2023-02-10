@@ -9,3 +9,9 @@ const backgroundColor = Color(0xFFE8E4DE);
 
 String getLessonCover(String lessonId) =>
     "$baseURL/content/lessons/$lessonId/cover.png";
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
