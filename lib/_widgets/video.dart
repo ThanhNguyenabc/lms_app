@@ -14,12 +14,8 @@ class _VideoState extends State<Video> {
 
   @override
   void initState() {
-    print("vidoe path");
-
-    print(widget.path);
     super.initState();
-    _controller = VideoPlayerController.network(
-        "https://dev.ila.edu.vn/lms/lab/content/lessons/SJ-01-002/video%2001/video.mp4");
+    _controller = VideoPlayerController.network(widget.path);
     _controller.play();
     _initializeVideoPlayerFuture = _controller.initialize();
   }

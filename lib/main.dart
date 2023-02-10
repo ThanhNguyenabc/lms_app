@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lms_app/app_routes.dart';
 import 'package:lms_app/features/auth/viewmodel/auth_viewmodel.dart';
@@ -22,7 +23,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initDependency();
   await getIt.allReady();
-  runApp(const MyApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const MyApp(), // Wrap your app
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -37,12 +43,14 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        useInheritedMediaQuery: true,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         theme: ThemeData(
-          backgroundColor: Colors.white,
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: Colors.blue,
         ),
-        routes: appRoutes(),
+        routes: AppRoutes,
         initialRoute: AuthPage.route,
       ),
     );
